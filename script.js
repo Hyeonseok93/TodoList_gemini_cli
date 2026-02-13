@@ -74,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
         lucide.createIcons();
         updateStats();
         
-        // Reset the newly added ID so it doesn't animate on next re-render
         newlyAddedId = null;
     };
 
@@ -124,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
         saveTodos();
         renderTodos();
 
-        // Button effect
         saveButton.classList.add('success-pulse');
         setTimeout(() => saveButton.classList.remove('success-pulse'), 500);
 
@@ -139,9 +137,16 @@ document.addEventListener('DOMContentLoaded', () => {
         showModal(
             `Are you sure you want to permanently delete ${completedCount} completed task(s)?`,
             () => {
-                todos = todos.filter(t => !t.completed);
-                saveTodos();
-                renderTodos();
+                // Apply exit animation to all completed items
+                const itemsToExit = document.querySelectorAll('.todo-item.completed');
+                itemsToExit.forEach(item => item.classList.add('exit-item'));
+
+                // Wait for animation to finish
+                setTimeout(() => {
+                    todos = todos.filter(t => !t.completed);
+                    saveTodos();
+                    renderTodos();
+                }, 300);
             }
         );
     });
@@ -165,12 +170,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const todoId = parseInt(li.getAttribute('data-id'));
         const todoIndex = todos.findIndex(t => t.id === todoId);
 
+        // Individual Delete with animation
         if (e.target.closest('.delete')) {
             e.stopPropagation();
             showModal("Are you sure you want to delete this task?", () => {
-                todos.splice(todoIndex, 1);
-                saveTodos();
-                renderTodos();
+                li.classList.add('exit-item');
+                setTimeout(() => {
+                    todos.splice(todoIndex, 1);
+                    saveTodos();
+                    renderTodos();
+                }, 300);
             });
             return;
         }

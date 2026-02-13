@@ -134,8 +134,31 @@ body {
     }
 }
 
+@keyframes itemDisappear {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+        max-height: 100px;
+        margin-bottom: 0.75rem;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.9);
+        max-height: 0;
+        margin-bottom: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        border-width: 0;
+    }
+}
+
 .todo-item.new-item {
     animation: itemAppear 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.todo-item.exit-item {
+    animation: itemDisappear 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    pointer-events: none;
 }
 
 /* Button Success Pulse */
