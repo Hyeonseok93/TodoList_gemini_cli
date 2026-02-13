@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let todos = JSON.parse(localStorage.getItem('todos')) || [];
     let nextId = todos.length > 0 ? Math.max(...todos.map(t => t.id)) + 1 : 1;
     let newlyAddedId = null;
+    let lastTotalCount = todos.length;
 
     const saveTodos = () => {
         localStorage.setItem('todos', JSON.stringify(todos));
@@ -23,8 +24,16 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const updateStats = () => {
-        const activeCount = todos.filter(t => !t.completed).length;
-        taskStats.textContent = `${activeCount} Task${activeCount !== 1 ? 's' : ''} remaining`;
+        const totalCount = todos.length;
+        taskStats.textContent = `${totalCount} Task${totalCount !== 1 ? 's' : ''} remaining`;
+        
+        // Trigger pop-shake effect only if total count changed (add/delete)
+        if (totalCount !== lastTotalCount) {
+            taskStats.classList.remove('pop-shake');
+            void taskStats.offsetWidth; // Trigger reflow
+            taskStats.classList.add('pop-shake');
+            lastTotalCount = totalCount;
+        }
     };
 
     const renderTodos = () => {

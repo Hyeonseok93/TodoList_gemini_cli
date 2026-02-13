@@ -63,6 +63,21 @@ body {
     background: #f1f5f9;
     padding: 0.4rem 0.8rem;
     border-radius: 20px;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: inline-block;
+}
+
+@keyframes statsPopShake {
+    0% { transform: scale(1) translateX(0); }
+    20% { transform: scale(1.2) translateX(-3px); color: var(--brand-color); }
+    40% { transform: scale(1.2) translateX(3px); }
+    60% { transform: scale(1.2) translateX(-3px); }
+    80% { transform: scale(1.2) translateX(3px); }
+    100% { transform: scale(1) translateX(0); }
+}
+
+.stats.pop-shake {
+    animation: statsPopShake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
 /* Input Card */
